@@ -3847,7 +3847,7 @@ body {
   max-width: 400px;
   margin-left: auto;
   margin-right: auto;
-  margin-top: -0.75rem;
+  /*margin-top: -0.75rem;*/
   text-align: center;
 }
 .widget-session__track {
