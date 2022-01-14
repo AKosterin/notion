@@ -47,7 +47,7 @@
     });
 </script>
 
-<div class="widget widget-pianoroll theme-d" id='basepianoroll' dir='ltr'></div>
+<div class="widget widget-pianoroll" id='basepianoroll' dir='ltr'></div>
 
 <script src="/notion/learningmusic/widgets/build/SimplePianoRoll.js"></script>
 <script>
@@ -81,6 +81,7 @@
     document.addEventListener("DOMContentLoaded", function() {
         var sequencers = document.getElementsByClassName("widget-pianoroll");
         Array.from(sequencers).forEach(function(e) {
+            e.classList.add(data[e.id]["theme"]);
             window[e.id] = new SimplePianoRoll();
             window[e.id].init({
                 widgetId: e.id,
