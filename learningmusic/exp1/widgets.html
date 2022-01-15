@@ -1,0 +1,100 @@
+<script type="text/javascript">
+    function onLoad() {
+        ANIMATION_FRAMER = new AnimationFramer();
+        ANIMATION_FRAMER.init();
+
+        SUPERVISOR = new AudioSupervisor();
+        SUPERVISOR.init();
+
+        EXPORTER = new LiveSetExporter();
+        EXPORTER.init();
+
+        KEY_SUPERVISOR = new KeySupervisor();
+        KEY_SUPERVISOR.init();
+
+        METRONOME = new Metronome();
+        METRONOME.init();
+
+        LOCALE = 'ru';
+        LOCALE_PATH = '/ru';
+    }
+    onLoad();
+
+    document.addEventListener("DOMContentLoaded", function(event) {
+        var widgets = document.getElementsByClassName("widget");
+        var widgetIds = {};
+        for (var i = 0; i < widgets.length; i++) {
+            var id = widgets[i].id;
+            if (widgetIds[id]) {
+                throw "Duplicate widget id: " + id;
+            }
+            widgetIds[id] = true;
+        }
+    });
+</script>
+<div class="widget widget-pianoroll" id='basepianoroll' dir='ltr'></div>
+<script>
+    function getURLParams() {
+        var params= new Object();
+        var query = window.location.search.substring(1);
+        var pairs = query.split('&');
+        for (var i=0; i<pairs.length; i++) {
+            var pos = pairs[i].indexOf('=');
+            if (pos > 0) {
+                var key = pairs[i].substring(0,pos);
+                var val = pairs[i].substring(pos+1);
+                params[key] = val;
+            }
+        }
+        return params;
+    }
+
+    function httpGet(url)
+    {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open( "GET", url, false ); // false for synchronous request
+        xmlHttp.send( null );
+        return xmlHttp.responseText;
+    }
+
+    params = getURLParams();
+    data = JSON.parse(JSON.parse(httpGet('https://api.github.com/gists/' + params["gist_id"])).files[params["file_name"]].content);
+    //data = JSON.parse(httpGet('/data/' + params["file_name"]))
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var sequencers = document.getElementsByClassName("widget-pianoroll");
+        Array.from(sequencers).forEach(function(e) {
+            e.classList.add(data[e.id]["theme"]);
+            window[e.id] = new SimplePianoRoll();
+            window[e.id].init({
+                widgetId: e.id,
+                material: data[e.id]["material"],
+                tempo: data[e.id]["tempo"],
+                onPlay: data[e.id]["onPlay"],
+                targetState: JSON.stringify(data[e.id]["targetState"]),
+                defaultState: JSON.stringify(data[e.id]["defaultState"]),
+                lanes: data[e.id]["lanes"],
+                beats: data[e.id]["beats"],
+                gridSize: data[e.id]["gridSize"],
+                allowResize: data[e.id]["allowResize"],
+                disableExport: data[e.id]["disableExport"],
+                instrument: data[e.id]["instrument"],
+                showTempoSlider: data[e.id]["showTempoSlider"],
+                showRootChooser: data[e.id]["showRootChooser"],
+                showScaleChooser: data[e.id]["showScaleChooser"],
+                availableScales: data[e.id]["availableScales"],
+                defaultScale: data[e.id]["defaultScale"],
+                defaultRoot: data[e.id]["defaultRoot"],
+                defaultOctave: data[e.id]["defaultOctave"],
+                defaultOctaveCount: data[e.id]["defaultOctaveCount"],
+                recorder: data[e.id]["recorder"],
+                exporter: EXPORTER,
+                tip: data[e.id]["tip"],
+                tips: data[e.id]["tips"],
+                highlightedLanes: data[e.id]["highlightedLanes"],
+                lang: data[e.id]["lang"]
+            })
+        })
+
+    });
+</script>
