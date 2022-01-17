@@ -13,6 +13,47 @@
   </head>
   <body class="lang--ru bg--base color--inverted ltr" dir="ltr" onload="">
     <script type="text/javascript">
+      function getURLParams() {
+        var params= new Object();
+        var query = window.location.search.substring(1);
+        var pairs = query.split('&');
+        for (var i=0; i<pairs.length; i++) {
+          var pos = pairs[i].indexOf('=');
+          if (pos > 0) {
+            var key = pairs[i].substring(0,pos);
+            var val = pairs[i].substring(pos+1);
+            params[key] = val;
+          }
+        }
+        return params;
+      }
+
+      function httpGet(url)
+      {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open( "GET", url, false ); // false for synchronous request
+        xmlHttp.send( null );
+        return xmlHttp.responseText;
+      }
+
+      params = getURLParams();
+      data = JSON.parse(JSON.parse(httpGet('https://api.github.com/gists/' + params["gist_id"])).files[params["file_name"]].content);
+      //data = JSON.parse(httpGet('/data/' + params["file_name"]));
+
+      placeholder = document.getElementById("placeholder");
+
+      Object.keys(data).forEach(function (key){
+        new_div = document.createElement("div");
+        new_div.id = key
+        new_div.classList.add("widget",data[key]["type"])
+        if(data[key]["theme"]){
+          new_div.classList.add(data[key]["theme"])
+        }
+        new_div.dir = "ltr"
+        document.body.insertBefore(new_div, placeholder);
+      });
+    </script>
+    <script type="text/javascript">
     function onLoad() {
         ANIMATION_FRAMER = new AnimationFramer();
         ANIMATION_FRAMER.init();
@@ -47,71 +88,92 @@
     });
 </script>
 
-<div class="widget widget-pianoroll theme-d"
-     id='_aroundtheworldaroundtheworldchords'
-     dir='ltr'
-     data-material='tonal'
-     data-tempo='121'
-     data-onPlay='takeover'
-     data-targetState=''
-     data-defaultState='{"events":[{"id":35,"start":15.75,"duration":0.25,"lane":14},{"id":34,"start":12,"duration":4,"lane":1},{"id":33,"start":12,"duration":4,"lane":3},{"id":32,"start":12,"duration":4,"lane":5},{"id":31,"start":8,"duration":4,"lane":0},{"id":30,"start":8,"duration":4,"lane":2},{"id":29,"start":8,"duration":4,"lane":4},{"id":28,"start":4,"duration":4,"lane":2},{"id":27,"start":4,"duration":4,"lane":4},{"id":26,"start":4,"duration":4,"lane":6},{"id":25,"start":0,"duration":4,"lane":4},{"id":24,"start":0,"duration":4,"lane":6},{"id":23,"start":0,"duration":4,"lane":8},{"id":21,"start":15,"duration":0.75,"lane":15},{"id":19,"start":14.5,"duration":0.25,"lane":14},{"id":18,"start":14,"duration":0.25,"lane":13},{"id":17,"start":13.5,"duration":0.25,"lane":12},{"id":16,"start":13,"duration":0.25,"lane":11},{"id":15,"start":12.5,"duration":0.25,"lane":10},{"id":14,"start":12,"duration":0.25,"lane":9},{"id":12,"start":11,"duration":0.25,"lane":10},{"id":11,"start":10,"duration":0.25,"lane":10},{"id":10,"start":9,"duration":0.25,"lane":10},{"id":9,"start":7.75,"duration":0.25,"lane":10},{"id":8,"start":7.5,"duration":0.25,"lane":11},{"id":7,"start":7,"duration":0.25,"lane":12},{"id":6,"start":6,"duration":0.25,"lane":12},{"id":5,"start":5,"duration":0.25,"lane":12},{"id":4,"start":3.75,"duration":0.25,"lane":12},{"id":3,"start":3.5,"duration":0.25,"lane":13},{"id":2,"start":3,"duration":0.25,"lane":14},{"id":1,"start":2,"duration":0.25,"lane":14},{"id":0,"start":1,"duration":0.25,"lane":14}],"lanes":[{"name":"G","color":"none","midi":null,"freq":48.9994},{"name":"A","color":"none","midi":null,"freq":55},{"name":"B","color":"none","midi":null,"freq":61.7354},{"name":"C","color":"none","midi":null,"freq":65.4064},{"name":"D","color":"none","midi":null,"freq":73.4162},{"name":"E","color":"none","midi":null,"freq":82.4069},{"name":"F♯","color":"#757575","midi":null,"freq":92.4986},{"name":"A","color":"none","midi":null,"freq":440},{"name":"B","color":"none","midi":null,"freq":493.883},{"name":"C","color":"none","midi":null,"freq":523.251},{"name":"D","color":"none","midi":null,"freq":587.33},{"name":"E","color":"none","midi":null,"freq":659.255},{"name":"F♯","color":"#757575","midi":null,"freq":739.989},{"name":"G","color":"none","midi":null,"freq":783.991},{"name":"A","color":"none","midi":null,"freq":880},{"name":"B","color":"none","midi":null,"freq":987.767}],"gridSize":4,"beats":16,"nextId":36,"page":-1,"scaleName":null,"rootName":null,"tempo":121,"version":2}'
-     data-lanes='[{"freq":48.9994,"name":"G"},{"freq":55,"name":"A"},{"freq":61.7354,"name":"B"},{"freq":65.4064,"name":"C"},{"freq":73.4162,"name":"D"},{"freq":82.4069,"name":"E"},{"freq":92.4986,"name":"F♯","color":"#757575"},{"freq":440,"name":"A"},{"freq":493.883,"name":"B"},{"freq":523.251,"name":"C"},{"freq":587.33,"name":"D"},{"freq":659.255,"name":"E"},{"freq":739.989,"name":"F♯","color":"#757575"},{"freq":783.991,"name":"G"},{"freq":880,"name":"A"},{"freq":987.767,"name":"B"}]'
-     data-beats='16'
-     data-gridSize='16'
-     data-allowResize='true'
-     data-disableExport='yes'
-     data-instrument='{"livePreset":"Grand Piano","fadeout":{"duration":0.1,"offset":0},"samples":[{"midi":24,"path":"boffner/boffner1"},{"midi":36,"path":"boffner/boffner2"},{"midi":66,"path":"piano/Fs4v10"},{"midi":72,"path":"piano/C5v10"},{"midi":78,"path":"piano/Fs5v10"},{"midi":84,"path":"piano/C6v10"},{"midi":90,"path":"piano/Fs6v10"},{"midi":96,"path":"piano/C7v10"},{"midi":102,"path":"piano/Fs7v10"},{"midi":108,"path":"piano/C8v10"}]}'
-     data-showTempoSlider=''
-     data-showRootChooser=''
-     data-showScaleChooser=''
-     data-availableScales=''
-     data-defaultScale=''
-     data-defaultRoot=''
-     data-defaultOctave=''
-     data-defaultOctaveCount=''
-     data-tip=''
-     data-tips='{"playstop":{"@text":"Кликнув на эту кнопку, можно запустить или остановить воспроизведение."},"createdeletenotes":{"@text":"Чтобы создать ноту, можно кликнуть на клетку матрицы. Чтобы удалить уже существующую ноту, можно кликнуть на неё снова."},"tempo":{"@text":"Подвигайте ползунок, чтобы изменить темп."},"overview":{"@text":"Чтобы отметить, можно кликнуть на отдельный такт. Если кликнуть ещё раз, можно увидеть весь паттерн."},"record":{"@text":"Можно кликнуть, чтобы запустить или остановить запись. Если кнопка активна, то всё, что вы играете падами, будет записываться."},"dragnotes":{"@text":"Вы можете двигать ноты по таблице-матрице, кликая и перетаскивая их."},"resizenotes":{"@text":"Потянув за левый край нот, вы можете удлинять или укорачивать их."},"selectnotes":{"@text":"Вы можете выбрать несколько нот, кликнув и обведя их мышкой. После этого вы можете передвигать их все вместе."},"export":{"@text":"Если вам нравится то, что вы сделали, вы можете экспортировать готовые вещи в Ableton Live."},"keyboard":{"@text":"Можно кликнуть сюда, чтобы играть этими звуками, используя кнопки вашей клавиатуры."},"drumpad":{"@text":"Можно кликнуть на пады (кнопки-клетки), чтобы воспроизвести звуки."},"lowhighpitch":{"@text":"Можно кликнуть и потянуть: более низкий звук – влево, более высокий – вправо."},"songformsections":{"@text":"Можно кликнуть на блок, чтобы прыгнуть к соответствующей части песни."},"devicemute":{"@text":"Если вы не слышите звуков, убедитесь, что звуковой интерфейс вашего компьютера или мобильного устройства включен и громкость добавлена достаточно."},"exportnotsupportedchromeios":{"@text":"Функция экспортирования в Live невозможна в этом браузере. Пожалуйста, используйте Safari, если вы хотите экспортировать вашу музыку на iOS устройство.","showalways":true}}'
-     data-highlightedLanes='[1,7,14]'
-     data-lang='{"@reset":"Восстановить","@clear":"Стереть","@exporttolive":"Экспортировать в Live","@exporting":"Экспортирую","@tempo":"Темп","@keyboard":"Клавиши","@on":"Вкл.","@off":"Выкл.","@close":"Закрыть","@lowpitch":"Низкий звук","@highpitch":"Высокий звук","@fillinsolution":"Заполнить решение","@incompatiblebrowser":"Ваш браузер не может показать интерактивные музыкальные примеры на этой странице.<br/>Пожалуйста, воспользуйтесь браузером, поддерживающим Web Audio, таким как Chrome, Safari, Firefox или Edge."}'
->
-</div>
+<div id="placeholder"></div>
 
 <script src="/notion/learningmusic/widgets/build/SimplePianoRoll.js"></script>
+<script src="/notion/learningmusic/widgets/build/ScaleExplorer.js"></script>
+<script src="/notion/learningmusic/widgets/build/Simplesession.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        var sequencers = document.getElementsByClassName("widget-pianoroll");
-        Array.from(sequencers).forEach(function(e) {
-            window[e.id] = new SimplePianoRoll();
-            window[e.id].init({
-                widgetId: e.id,
-                material: e.getAttribute('data-material'),
-                tempo: e.getAttribute('data-tempo'),
-                onPlay: e.getAttribute('data-onplay'),
-                targetState: e.getAttribute('data-targetstate'),
-                defaultState: e.getAttribute('data-defaultstate'),
-                lanes: JSON.parse(e.getAttribute('data-lanes')),
-                beats: parseInt(e.getAttribute('data-beats')),
-                gridSize: parseInt(e.getAttribute('data-gridsize')),
-                allowResize: e.getAttribute('data-allowresize') == "true",
-                disableExport: e.getAttribute('data-disableexport'),
-                instrument: JSON.parse(e.getAttribute('data-instrument')),
-                showTempoSlider: e.getAttribute('data-showtemposlider'),
-                showRootChooser: e.getAttribute('data-showrootchooser'),
-                showScaleChooser: e.getAttribute('data-showscalechooser'),
-                availableScales: e.getAttribute('data-availablescales'),
-                defaultScale: e.getAttribute('data-defaultscale'),
-                defaultRoot: e.getAttribute('data-defaultroot'),
-                defaultOctave: e.getAttribute('data-defaultoctave'),
-                defaultOctaveCount: e.getAttribute('data-defaultoctavecount'),
-                recorder: window[e.getAttribute('data-recorder')],
-                exporter: EXPORTER,
-                tip: e.getAttribute('data-tip'),
-                tips: JSON.parse(e.getAttribute('data-tips')),
-                highlightedLanes: JSON.parse(e.getAttribute('data-highlightedlanes')),
-                lang: JSON.parse(e.getAttribute('data-lang'))
-            })
+      var sequencers = document.getElementsByClassName("widget-pianoroll");
+      Array.from(sequencers).forEach(function(e) {
+        window[e.id] = new SimplePianoRoll();
+        window[e.id].init({
+          widgetId: e.id,
+          material: data[e.id]["material"],
+          tempo: data[e.id]["tempo"],
+          onPlay: data[e.id]["onplay"],
+          targetState: JSON.stringify(data[e.id]["targetstate"]),
+          defaultState: JSON.stringify(data[e.id]["defaultstate"]),
+          lanes: data[e.id]["lanes"],
+          beats: data[e.id]["beats"],
+          gridSize: data[e.id]["gridsize"],
+          allowResize: data[e.id]["allowresize"],
+          disableExport: data[e.id]["disableexport"],
+          instrument: data[e.id]["instrument"],
+          showTempoSlider: data[e.id]["showtemposlider"],
+          showRootChooser: data[e.id]["showrootchooser"],
+          showScaleChooser: data[e.id]["showscalechooser"],
+          availableScales: data[e.id]["availablescales"],
+          defaultScale: data[e.id]["defaultscale"],
+          defaultRoot: data[e.id]["defaultroot"],
+          defaultOctave: data[e.id]["defaultoctave"],
+          defaultOctaveCount: data[e.id]["defaultoctavecount"],
+          recorder: data[e.id]["recorder"],
+          exporter: EXPORTER,
+          tip: data[e.id]["tip"],
+          tips: data[e.id]["tips"],
+          highlightedLanes: data[e.id]["highlightedlanes"],
+          lang: data[e.id]["lang"]
         })
+      })
 
+      sequencers = document.getElementsByClassName("session");
+      Array.from(sequencers).forEach(function(e) {
+        window[e.id] = new SimpleSession();
+        window[e.id].init({
+          widgetId: e.id,
+          preset: data[e.id]["preset"],
+          tips: data[e.id]["tips"],
+          tip: data[e.id]["tip"],
+          lang: data[e.id]["lang"]
+        })
+      })
+
+      sequencers = document.getElementsByClassName("widget-drumpad");
+      Array.from(sequencers).forEach(function(e) {
+        window[e.id] = new SimpleDrumpad();
+        window[e.id].init({
+          widgetId: e.id,
+          keyboard: data[e.id]["keyboard"],
+          kit: data[e.id]["kit"],
+          recorder: window[data[e.id]["recorder"]],
+          tips: data[e.id]["tips"],
+          tip: data[e.id]["tip"],
+          lang: data[e.id]["lang"]
+        })
+      })
+
+      sequencers = document.getElementsByClassName("widget-scale-explorer");
+      Array.from(sequencers).forEach(function(e) {
+        window[e.id] = new ScaleExplorer();
+        window[e.id].init({
+          widgetId: e.id,
+          isQuantized: data[e.id]["isquantized"],
+          frequencies:data[e.id]["frequencies"],
+          showPiano:data[e.id]["showpiano"],
+          showRootChooser: data[e.id]["showrootchooser"],
+          showScaleChooser: data[e.id]["showscalechooser"],
+          availableScales: data[e.id]["availablescales"],
+          defaultScale: data[e.id]["defaultscale"],
+          defaultRoot: data[e.id]["defaultroot"],
+          keyboard: data[e.id]["keyboard"],
+          scaleCanBeMappedToPiano: data[e.id]["scalecanbemappedtopiano"],
+          tips: data[e.id]["tips"],
+          tip: data[e.id]["tip"],
+          lang: data[e.id]["lang"]
+        })
+      })
     });
 </script>
   </body>
