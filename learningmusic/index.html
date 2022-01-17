@@ -43,14 +43,24 @@
       placeholder = document.getElementById("placeholder");
 
       Object.keys(data).forEach(function (key){
-        new_div = document.createElement("div");
-        new_div.id = key
-        new_div.classList.add("widget",data[key]["type"])
+        let new_div = document.createElement("div");
+        new_div.id = key;
+        new_div.classList.add("widget",data[key]["type"]);
         if(data[key]["theme"]){
-          new_div.classList.add(data[key]["theme"])
+          new_div.classList.add(data[key]["theme"]);
         }
-        new_div.dir = "ltr"
+        new_div.dir = "ltr";
         document.body.insertBefore(new_div, placeholder);
+
+        if(data[key]["targetstate"]){
+          let btn = document.createElement("div");
+          btn.classList.add("btn", "btn--body-text", "color--base",  "bg--white");
+          btn.onclick = function (){
+            window[key].showTargetState();
+          }
+          btn.textContent = "Заполнить решение";
+          document.body.insertBefore(btn, placeholder);
+        }
       });
     </script>
     <script type="text/javascript">
