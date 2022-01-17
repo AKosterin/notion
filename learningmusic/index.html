@@ -36,6 +36,10 @@
         return xmlHttp.responseText;
       }
 
+      function isEmpty(obj) {
+        return Object.keys(obj).length === 0;
+      }
+
       params = getURLParams();
       data = JSON.parse(JSON.parse(httpGet('https://api.github.com/gists/' + params["gist_id"])).files[params["file_name"]].content);
       //data = JSON.parse(httpGet('/data/' + params["file_name"]));
@@ -52,7 +56,7 @@
         new_div.dir = "ltr";
         document.body.insertBefore(new_div, placeholder);
 
-        if(data[key]["targetstate"]){
+        if(!(Object.keys(data[key]["targetstate"]).length === 0)){
           let btn = document.createElement("div");
           btn.classList.add("btn", "btn--body-text", "color--base",  "bg--white");
           btn.onclick = function (){
